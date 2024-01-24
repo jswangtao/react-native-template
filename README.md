@@ -1,11 +1,11 @@
 # 👾 React Native Lidong Template
 
-> 「立冬」React Native 初始化项目模板
+> React Native 初始化项目模板
 
-[lidong-npm-url]: https://www.npmjs.com/package/@fruits-chain/react-native-lidong-template
+[lidong-npm-url]: https://www.npmjs.com/package/@jsxiangfu/react-native-template
 
-[![](https://img.shields.io/npm/v/@fruits-chain/react-native-lidong-template.svg)][lidong-npm-url]
-[![](https://img.shields.io/npm/dm/@fruits-chain/react-native-lidong-template.svg)][lidong-npm-url]
+[![](https://img.shields.io/npm/v/@jsxiangfu/react-native-template.svg)][lidong-npm-url]
+[![](https://img.shields.io/npm/dm/@jsxiangfu/react-native-template.svg)][lidong-npm-url]
 
 ## ⭐ 特点
 
@@ -21,7 +21,7 @@
 ### 初始化项目
 
 ```bash
-npx react-native init MyApp --template @fruits-chain/react-native-lidong-template
+npx react-native init MyApp --template @jsxiangfu/react-native-template
 ```
 
 ```bash

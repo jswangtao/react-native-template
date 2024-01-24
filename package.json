@@ -2,7 +2,7 @@
   "name": "@jsxiangfu/react-native-template",
   "version": "1.0.0",
   "description": "👾React Native 初始化项目模板",
-  "repository": "https://github.com/hjfruit/react-native-template.git",
+  "repository": "https://github.com/jswangtao/react-native-template.git",
   "author": "相甫 <jstangtao@gmail.com>",
   "license": "Apache-2.0",
   "scripts": {

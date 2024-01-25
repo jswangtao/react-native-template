@@ -1,11 +1,11 @@
-# 👾 React Native Lidong Template
+# 👾 React Native Template
 
 > React Native 初始化项目模板
 
-[lidong-npm-url]: https://www.npmjs.com/package/@jsxiangfu/react-native-template
+[npm-url]: https://www.npmjs.com/package/@jsxiangfu/react-native-template
 
-[![](https://img.shields.io/npm/v/@jsxiangfu/react-native-template.svg)][lidong-npm-url]
-[![](https://img.shields.io/npm/dm/@jsxiangfu/react-native-template.svg)][lidong-npm-url]
+[![](https://img.shields.io/npm/v/@jsxiangfu/react-native-template.svg)][npm-url]
+[![](https://img.shields.io/npm/dm/@jsxiangfu/react-native-template.svg)][npm-url]
 
 ## ⭐ 特点
 
@@ -14,7 +14,7 @@
 - 预置应用升级 [rn-update-version](https://www.npmjs.com/package/rn-update-version)
 - 预置白屏错误拦截 [react-native-exception-handler](https://www.npmjs.com/package/react-native-exception-handler)，可上报错误
 - 预置小暑 UI 组件库 [@fruits-chain/react-native-xiaoshu
-](https://www.npmjs.com/package/@fruits-chain/react-native-xiaoshu)
+  ](https://www.npmjs.com/package/@fruits-chain/react-native-xiaoshu)
 
 ## ▶️ 使用方式
 
@@ -59,12 +59,13 @@ cd MyApp && yarn
 ### 使用
 
 ```ts
-import RNConfig from 'react-native-config'
+import RNConfig from "react-native-config";
 
-console.log(RNConfig.HOST)
+console.log(RNConfig.HOST);
 ```
 
 `typescript` 变量字段提示在 `src/typings/react-native-config.d.ts` 文件内维护。
+
 ### 切换不同环境
 
 - Android 端采用设置环境变量的方式，例如 `cross-env ENVFILE=.test.dev react-native xxx xxx`

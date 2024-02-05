@@ -1,5 +1,14 @@
 apply plugin: "com.android.application"
-apply plugin: "org.jetbrains.kotlin.android"
+// react-native-config 与多渠道配置对应关系
+project.ext.envConfigFiles = [
+        dev: ".env.dev",
+        qa: ".env.test",
+        demo: ".env.demo",
+        production: ".env.production",
+        anothercustombuild: ".env",
+]
+
+apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle" // react-native-config
 apply plugin: "com.facebook.react"
 
 /**
@@ -69,10 +78,21 @@ def enableProguardInReleaseBuilds = false
  */
 def jscFlavor = 'org.webkit:android-jsc:+'
 
+// 读取 package.json 中的信息
+def getPackage() {
+    def inputFile = new File("../package.json")
+    def slurper = new groovy.json.JsonSlurper()
+    def packageJson = slurper.parseText(inputFile.text)
+    return packageJson
+}
+
+def packageJSON = getPackage()
+def appName = packageJSON["name"]
+
 android {
     ndkVersion rootProject.ext.ndkVersion
-    buildToolsVersion rootProject.ext.buildToolsVersion
-    compileSdk rootProject.ext.compileSdkVersion
+
+    compileSdkVersion rootProject.ext.compileSdkVersion
 
     namespace "com.projectname"
     defaultConfig {
@@ -80,7 +100,8 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
-        versionName "1.0"
+        versionName "0.0.1"
+        resValue "string", "build_config_package", "com.projectname" // react-native-config
     }
     signingConfigs {
         debug {
@@ -88,6 +109,14 @@ android {
             storePassword 'android'
             keyAlias 'androiddebugkey'
             keyPassword 'android'
+        }
+        release {
+            if (project.hasProperty('MYAPP_UPLOAD_STORE_FILE')) {
+                storeFile file(MYAPP_UPLOAD_STORE_FILE)
+                storePassword MYAPP_UPLOAD_STORE_PASSWORD
+                keyAlias MYAPP_UPLOAD_KEY_ALIAS
+                keyPassword MYAPP_UPLOAD_KEY_PASSWORD
+            }
         }
     }
     buildTypes {
@@ -100,15 +129,53 @@ android {
             signingConfig signingConfigs.debug
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            applicationVariants.all { variant ->
+                variant.outputs.all {
+                    def outputFileSuffix = variant.flavorName == 'production' ? '' : ".${variant.flavorName}"
+                    if (variant.buildType.name == 'release') {
+                        outputFileName = "${appName}${outputFileSuffix}-v${defaultConfig.versionName}.apk" 
+                    }
+                }
+            }
         }
     }
+
+    flavorDimensions "default"
+
+    productFlavors {
+        dev {
+            applicationIdSuffix ".dev"
+            resValue "string", "app_name", "DEV.ProjectName"
+        }
+        demo {
+            applicationIdSuffix ".demo"
+            resValue "string", "app_name", "DEMO.ProjectName"
+        }
+        qa {
+            applicationIdSuffix ".test"
+            resValue "string", "app_name", "TEST.ProjectName"
+        }
+        production {
+            dimension "default"
+            resValue "string", "app_name", "ProjectName"
+        }
+    }
+
+
 }
 
 dependencies {
     // The version of react-native is set by the React Native Gradle Plugin
     implementation("com.facebook.react:react-android")
-    implementation("com.facebook.react:flipper-integration")
 
+    implementation("androidx.core:core-splashscreen:1.0.0") // react-native-bootsplash
+
+    debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}")
+    debugImplementation("com.facebook.flipper:flipper-network-plugin:${FLIPPER_VERSION}") {
+        exclude group:'com.squareup.okhttp3', module:'okhttp'
+    }
+
+    debugImplementation("com.facebook.flipper:flipper-fresco-plugin:${FLIPPER_VERSION}")
     if (hermesEnabled.toBoolean()) {
         implementation("com.facebook.react:hermes-android")
     } else {
